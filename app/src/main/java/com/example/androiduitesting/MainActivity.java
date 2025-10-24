@@ -2,8 +2,10 @@ package com.example.androiduitesting;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,6 +43,17 @@ public class MainActivity extends AppCompatActivity {
 
         cityList.setAdapter(cityAdapter);
 
+        cityList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedCity = dataList.get(position);
+
+                Intent clickCityIntent = new Intent(MainActivity.this, ShowActivity.class);
+                clickCityIntent.putExtra("city", selectedCity);
+                startActivity(clickCityIntent);
+            }
+        });
+
         final Button addButton = findViewById(R.id.button_add);
         addButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -59,10 +72,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         final Button deleteButton = findViewById(R.id.button_clear);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                cityAdapter.clear();
-            }
-        });
+        deleteButton.setOnClickListener(v -> cityAdapter.clear());
     }
 }
